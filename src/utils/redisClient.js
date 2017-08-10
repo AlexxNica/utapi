@@ -1,4 +1,4 @@
-import Redis from 'ioredis';
+const Redis = require('ioredis');
 
 /**
 * Creates a new Redis client instance
@@ -6,10 +6,10 @@ import Redis from 'ioredis';
 * @param {Werelogs} log - Werelogs logger
 * @return {Redis} - Redis client instance
 */
-export default function redisClient(config, log) {
+function redisClient(config, log) {
     const redisClient = new Redis(Object.assign({
         // disable offline queue
-        enableOfflineQueue: false,
+        enableOfflineQueue: true,
         // keep alive 3 seconds
         keepAlive: 3000,
     }, config));
@@ -18,3 +18,5 @@ export default function redisClient(config, log) {
     }));
     return redisClient;
 }
+
+module.exports = redisClient;

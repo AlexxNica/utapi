@@ -63,7 +63,7 @@ function getSchemaPrefix(params, timestamp) {
 * @param {number} timestamp - unix timestamp normalized to the nearest 15 min.
 * @return {string} - schema key
 */
-export function generateKey(params, metric, timestamp) {
+function generateKey(params, metric, timestamp) {
     const prefix = getSchemaPrefix(params, timestamp);
     return keys[metric](prefix);
 }
@@ -73,7 +73,7 @@ export function generateKey(params, metric, timestamp) {
 * @param {object} params - object with metric type and id as a property
 * @return {string[]} - array of keys for counters
 */
-export function getCounters(params) {
+function getCounters(params) {
     const prefix = getSchemaPrefix(params);
     return Object.keys(counters).map(item => counters[item](prefix));
 }
@@ -84,7 +84,7 @@ export function getCounters(params) {
 * @param {number} timestamp - unix timestamp normalized to the nearest 15 min.
 * @return {string[]} - list of keys
 */
-export function getKeys(params, timestamp) {
+function getKeys(params, timestamp) {
     const prefix = getSchemaPrefix(params, timestamp);
     return Object.keys(keys).map(item => keys[item](prefix));
 }
@@ -94,7 +94,7 @@ export function getKeys(params, timestamp) {
 * @param {string} key - schema key
 * @return {string} metric - Utapi metric
 */
-export function getMetricFromKey(key) {
+function getMetricFromKey(key) {
     const fields = key.split(':');
     // Identify the location of the metric in the array.
     const metricLocation = key.includes('counter') ? -2 : -1;
@@ -106,7 +106,7 @@ export function getMetricFromKey(key) {
 * @param {object} params - object with metric type and id as a property
 * @return {string[]} - list of keys
 */
-export function getStateKeys(params) {
+function getStateKeys(params) {
     const prefix = getSchemaPrefix(params);
     return Object.keys(stateKeys).map(item => stateKeys[item](prefix));
 }
@@ -117,7 +117,7 @@ export function getStateKeys(params) {
 * @param {string} metric - metric to generate a key for
 * @return {string} - schema key
 */
-export function generateStateKey(params, metric) {
+function generateStateKey(params, metric) {
     const prefix = getSchemaPrefix(params);
     return stateKeys[metric](prefix);
 }
@@ -128,7 +128,17 @@ export function generateStateKey(params, metric) {
 * @param {string} metric - metric to generate a key for
 * @return {string} - schema key
 */
-export function generateCounter(params, metric) {
+function generateCounter(params, metric) {
     const prefix = getSchemaPrefix(params);
     return counters[metric](prefix);
 }
+
+module.exports = {
+    generateKey,
+    getCounters,
+    getKeys,
+    getMetricFromKey,
+    getStateKeys,
+    generateStateKey,
+    generateCounter,
+};
