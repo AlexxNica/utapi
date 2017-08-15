@@ -2,13 +2,13 @@ const http = require('http');
 const aws4 = require('aws4');
 
 // Input AWS access key, secret key, and session token.
-const accessKeyId = 'EO4FRH6BA2L7FCK0EKVT';
-const secretAccessKey = 'B5QSoChhLVwKzZG1w2fXO0FE2tMg4imAIiV47YWX';
+const accessKeyId = 'accessKey1';
+const secretAccessKey = 'verySecretKey1';
 const token = '';
 const bucketName = 'test-bucket';
 // Get the start and end times for a range of one month.
-const startTime = new Date(2016, 1, 1, 0, 0, 0, 0).getTime();
-const endTime = new Date(2016, 2, 1, 0, 0, 0, 0).getTime() - 1;
+const startTime = new Date(2017, 7, 1, 0, 0, 0, 0).getTime();
+const endTime = new Date(2017, 8, 1, 0, 0, 0, 0).getTime() - 1;
 const requestBody = JSON.stringify({
     buckets: [bucketName],
     timeRange: [startTime, endTime],
