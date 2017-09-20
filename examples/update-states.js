@@ -2,15 +2,26 @@ const async = require('async');
 const Redis = require('ioredis');
 
 /*
-This script updates the state of Utapi `numberOfObjects` and `storageUtilized`
-starting from the current timestamp (i.e., the latest 15 minute interval).
+
+This script updates the state of Utapi `numberOfObjects` and
+`storageUtilized` starting from the current timestamp (i.e., the latest 15
+minute interval).
 
 To use:
-* Set REDIS_ENDPOINT to the host and port where the Redis server is running
-* Set the various metric resource states (STATES) to your desired values. This
-  can be an array of n length of objects. Each value `storageUtilized` and
-  `numberOfObjects` of the state objects is optional, and you should only
-  include those that you want to change.
+- Set your redis endpoint (`REDIS_ENDPOINT`) to the host and port where the
+Redis server is running. Two examples are provided: one for local use, and a
+second example (which is commented out) for a deployment scenario in which Redis
+Sentinels are used.
+
+- Set the various metric resource states (`STATES`) to your desired values.
+This can be an array of n length of objects. Each value `storageUtilized` and
+`numberOfObjects` of the state objects is optional, and you should only
+include those values that you want to change.
+
+- To find the current state of a bucket, perform a recursive listing of
+objects in a bucket to calculate the storage utilized and number of objects.
+For this purpose, we suggest using `s3cmd` or `aws-cli`.
+
 */
 
 const REDIS_ENDPOINT = {
@@ -18,10 +29,40 @@ const REDIS_ENDPOINT = {
     port: 6379,
 };
 
+/* Example endpoint for a Utapi deployment:
+
+const REDIS_ENDPOINT = {
+    name: 'scality-s3',
+    sentinels: [
+        {
+            host: 'endpoint0',
+            port: 6379
+        },
+        {
+            host: 'endpoint1',
+            port: 6379
+        },
+        {
+            host: 'endpoint2',
+            port: 6379
+        },
+        {
+            host: 'endpoint3',
+            port: 6379
+        },
+        {
+            host: 'endpoint4',
+            port: 6379
+        },
+    ],
+};
+
+*/
+
 const STATES = [
     {
         resource: 'buckets', // required
-        bucket: 'test-bucket', // required
+        bucket: '<bucket-name>', // required
         storageUtilized: '0',
         numberOfObjects: '0',
     },
