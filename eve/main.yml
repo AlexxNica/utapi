@@ -19,9 +19,12 @@ stages:
           shallow: True
           retryFetch: True
           haltOnFailure: True
+#      - ShellCommand:
+#          name: get api node modules from cache
+#          command: mv /home/eve/node_reqs/node_modules .
       - ShellCommand:
-          name: get api node modules from cache
-          command: mv /home/eve/node_reqs/node_modules .
+          name: npm install
+          command: npm install
       - ShellCommand:
           name: run static analysis tools on markdown
           command: npm run lint_md
@@ -31,6 +34,7 @@ stages:
       - ShellCommand:
           name: run unit tests
           command: npm test
+          usePTY: True
       - ShellCommand:
           name: run feature tests
           command: npm run ft_test

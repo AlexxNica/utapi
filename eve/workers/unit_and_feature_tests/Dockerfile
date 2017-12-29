@@ -23,10 +23,10 @@ RUN adduser -u 1042 --home /home/eve --disabled-password --gecos "" eve \
     && adduser eve sudo \
     && sed -ri 's/(%sudo.*)ALL$/\1NOPASSWD:ALL/' /etc/sudoers
 
-ARG BUILDBOT_VERSION=0.9.7
+#ARG BUILDBOT_VERSION=0.9.7
 
 
-RUN pip install buildbot-worker==$BUILDBOT_VERSION
+RUN pip install buildbot-worker==$BUILDBOT_VERSION service_identity
 
 USER eve
 
@@ -34,10 +34,10 @@ USER eve
 # Install nodejs packages needed by utapi
 #
 
-RUN mkdir /home/eve/node_reqs
-
-COPY package.json /home/eve/node_reqs/package.json
-RUN cd /home/eve/node_reqs && npm install
+#RUN mkdir /home/eve/node_reqs
+#
+#COPY package.json /home/eve/node_reqs/package.json
+#RUN cd /home/eve/node_reqs && npm install
 
 WORKDIR /home/eve/workspace
 
