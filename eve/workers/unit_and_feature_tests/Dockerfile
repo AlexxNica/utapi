@@ -23,9 +23,7 @@ RUN adduser -u 1042 --home /home/eve --disabled-password --gecos "" eve \
     && adduser eve sudo \
     && sed -ri 's/(%sudo.*)ALL$/\1NOPASSWD:ALL/' /etc/sudoers
 
-#ARG BUILDBOT_VERSION=0.9.7
-
-
+ARG BUILDBOT_VERSION
 RUN pip install buildbot-worker==$BUILDBOT_VERSION service_identity
 
 USER eve
@@ -43,4 +41,4 @@ WORKDIR /home/eve/workspace
 
 CMD buildbot-worker create-worker . "$BUILDMASTER:$BUILDMASTER_PORT" "$WORKERNAME" "$WORKERPASS" \
     && sudo service redis-server start \
-    && twistd -ny buildbot.tac
+    && buildbot-worker start --nodaemon
